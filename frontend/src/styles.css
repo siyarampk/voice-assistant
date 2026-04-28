@@ -1,0 +1,133 @@
+:root {
+  --bg-color: #000000;
+  --primary-glow: #00f2ff;
+  --secondary-glow: #0066ff;
+  --text-main: #ffffff;
+  --text-sub: #888888;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.assistant-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #0a0a0a 0%, #000000 100%);
+}
+
+/* Sphere Styles */
+.sphere-container {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.sphere-container:hover {
+  transform: scale(1.02);
+}
+
+.sphere-base {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 0 50px rgba(0, 242, 255, 0.05);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+
+/* Animations based on state */
+.state-listening .sphere-base {
+  box-shadow: 0 0 50px var(--primary-glow);
+  animation: pulse-listening 2s infinite ease-in-out;
+}
+
+.state-processing .sphere-base {
+  box-shadow: 0 0 40px var(--secondary-glow);
+  animation: pulse-processing 1s infinite alternate;
+}
+
+.state-speaking .sphere-base {
+  box-shadow: 0 0 60px var(--primary-glow);
+  animation: pulse-speaking 0.5s infinite alternate;
+}
+
+
+@keyframes pulse-listening {
+  0% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 0.5; }
+}
+
+@keyframes pulse-processing {
+  0% { transform: rotate(0deg) scale(1); border: 2px dashed var(--secondary-glow); }
+  100% { transform: rotate(360deg) scale(1.05); border: 2px dashed var(--primary-glow); }
+}
+
+@keyframes pulse-speaking {
+  0% { transform: scale(1); filter: brightness(1); }
+  100% { transform: scale(1.15); filter: brightness(1.5); }
+}
+
+/* Particle effect emulation */
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  background: var(--primary-glow);
+  border-radius: 50%;
+  filter: blur(1px);
+}
+
+/* Status Text */
+.status-text-container {
+  margin-top: 40px;
+  text-align: center;
+  min-height: 80px;
+}
+
+.status-main {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  color: var(--text-main);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.status-sub {
+  font-size: 14px;
+  color: var(--text-sub);
+  font-weight: 400;
+}
+
+/* Hidden elements */
+.hidden {
+  display: none;
+}
