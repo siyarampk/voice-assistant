@@ -15,7 +15,7 @@ export function speak(text, onStart, onEnd) {
         // Find a high-quality voice
         const voices = window.speechSynthesis.getVoices();
         const preferredVoice = 
-            voices.find(v => v.name.includes("Google US English") && v.name.includes("Female")) ||
+            voices.find(v => v.name.includes("Google US English") && v.name.includes("male")) ||
             voices.find(v => v.name.includes("Google")) ||
             voices.find(v => v.lang.startsWith("en")) ||
             voices[0];

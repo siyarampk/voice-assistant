@@ -72,6 +72,9 @@ export default function ParticleSphere({ state }) {
       } else if (state === 'SPEAKING') {
         speed = 0.02;
         glowColor = 'rgba(0, 242, 255, 1)';
+      } else if (state === 'INTERRUPTED') {
+        speed = 0.05;
+        glowColor = 'rgba(255, 102, 0, 1)'; // Orange to indicate interruption
       } else {
         speed = 0.003;
         glowColor = 'rgba(255, 255, 255, 0.4)';

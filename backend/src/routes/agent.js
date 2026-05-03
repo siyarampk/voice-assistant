@@ -24,13 +24,11 @@ router.post("/run", async (req, res) => {
 
         // 2. If it's a specific tool (e.g. time, weather), the graph already computed the answer.
         if (state.output !== "LLM_RESPONSE") {
-            console.log(`🛠️ Tool handled response: "${state.output}"`);
             res.write(state.output);
             return res.end();
         }
 
         // 3. Otherwise, it's a generic chat. We stream the response from Azure OpenAI.
-        console.log("☁️ Streaming from Azure OpenAI...");
         const stream = await model.stream([
             { role: "system", content: "You are a helpful, concise voice assistant." },
             { role: "user", content: input }
@@ -44,12 +42,11 @@ router.post("/run", async (req, res) => {
             }
         }
         
-        console.log("\n✅ Stream complete.");
+        console.log("\n  Stream complete.");
         res.end();
 
     } catch (error) {
         console.error("❌ Error in agent route:", error.message);
-        // Only try to send 500 if we haven't already started writing headers
         if (!res.headersSent) {
             res.status(500).send("Assistant encountered an internal error.");
         } else {

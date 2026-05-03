@@ -12,7 +12,7 @@ export default function useVoice(onResult, onError, onStateChange) {
     }
   }, [onStateChange]);
 
-  const startListening = useCallback(() => {
+  const startListening = useCallback((suppressStateChange = false) => {
     try {
       // Clean up previous instance if any
       if (recognitionRef.current) {
@@ -30,21 +30,35 @@ export default function useVoice(onResult, onError, onStateChange) {
       
       recognition.lang = "en-US";
       recognition.continuous = false;
-      recognition.interimResults = false;
+      recognition.interimResults = true;
 
       recognition.onstart = () => {
         setIsListening(true);
-        onStateChange?.('LISTENING');
+        if (!suppressStateChange) onStateChange?.('LISTENING');
       };
 
       recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        onResult(transcript);
+        let finalTranscript = '';
+        let interimTranscript = '';
+        
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript;
+          } else {
+            interimTranscript += event.results[i][0].transcript;
+          }
+        }
+        
+        if (finalTranscript) {
+          onResult(finalTranscript, true);
+        } else if (interimTranscript) {
+          onResult(interimTranscript, false);
+        }
       };
 
       recognition.onerror = (event) => {
         setIsListening(false);
-        onStateChange?.('IDLE');
+        if (!suppressStateChange) onStateChange?.('IDLE');
         if (event.error !== 'no-speech' && event.error !== 'aborted') {
           onError("Speech Error: " + event.error);
         }
@@ -69,5 +83,5 @@ export default function useVoice(onResult, onError, onStateChange) {
     }
   }, [isListening, startListening, stopListening]);
 
-  return { toggleListening, isListening, stopListening };
+  return { toggleListening, startListening, isListening, stopListening };
 }

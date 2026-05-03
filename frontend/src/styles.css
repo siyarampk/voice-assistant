@@ -131,3 +131,36 @@ body {
 .hidden {
   display: none;
 }
+
+/* Live transcript overlay */
+.transcript-overlay {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  font-size: 16px;
+  color: rgba(0, 242, 255, 0.85);
+  font-style: italic;
+  letter-spacing: 0.3px;
+  text-shadow: 0 0 12px rgba(0, 242, 255, 0.4);
+  animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Interrupted state */
+.state-interrupted .sphere-base {
+  box-shadow: 0 0 50px rgba(255, 102, 0, 0.6);
+  animation: pulse-interrupted 0.4s infinite alternate;
+}
+
+@keyframes pulse-interrupted {
+  0%   { transform: scale(1);    filter: brightness(1); }
+  100% { transform: scale(1.08); filter: brightness(1.4); }
+}
